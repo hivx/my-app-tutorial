@@ -1,13 +1,14 @@
 import React, { useState } from 'react'; //su dung react hook useState
+import {createStore } from 'redux';
 import './App.css';
 import InputFeild from './components/InputFeild';//import inputfeild
-import {Todo} from "./model" //import todo dung trong dong 12 tu model
+import {Todo} from "./model" //import todo dung trong dong 13 tu model
 import TodoList from './components/TodoList';
 import {DragDropContext, DropResult} from 'react-beautiful-dnd';
 
 //khai bao compponent trong react su dung Typescript
 const App: React.FC = () => {
-  //khai bao sate voi bien todo va setTodo de cap nhat gia trij bien todo
+  //khai bao sate voi bien todo va setTodo de cap nhat gia tri bien todo
   const [todo, setTodo] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]); //state voi bien  todos la mang cua todo
   const [CompletedTodos, setCompletedTodos] = useState<Todo[]>([]);
@@ -45,7 +46,6 @@ const App: React.FC = () => {
     let active = todos;
     let complete = CompletedTodos;
     
-    
     if (source.droppableId === "TodosList") {
       add = active[source.index];
       active.splice(source.index, 1);//splice de loai bo phan tu khoi mang
@@ -65,18 +65,17 @@ const App: React.FC = () => {
   };
   return (
     //HTML
-    <DragDropContext onDragEnd={onDragEnd}>
     <div className="App">
         <span className="heading"> Taskify </span>
         <InputFeild todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-        <TodoList 
-          todos={todos} setTodos={setTodos}
-          CompletedTodos = {CompletedTodos}
-          setCompletedTodos={setCompletedTodos}
-        />
-
+        <DragDropContext onDragEnd={onDragEnd}>
+          <TodoList 
+            todos={todos} setTodos={setTodos}
+            CompletedTodos = {CompletedTodos}
+            setCompletedTodos={setCompletedTodos}
+          />
+        </DragDropContext>
     </div>
-    </DragDropContext>
   );
 }
 
