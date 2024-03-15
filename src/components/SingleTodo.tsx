@@ -1,6 +1,6 @@
 //Xu ly tung todo mot
 import React, { useEffect, useRef, useState } from 'react';
-import { Todo } from '../model';
+import { Todo } from '../redux/store';
 import { CiEdit } from 'react-icons/ci';
 import { MdOutlineDelete, MdOutlineDone } from 'react-icons/md';
 import "./styles.css";
@@ -70,7 +70,7 @@ const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
             { edit ? (
               //input cho phep chinh sua todo
               <input
-                ref={inputRef} 
+                ref={inputRef}
                 value={editTodo} onChange={(e) => setEditTodo(e.target.value)}
                 className="todos__single--text"
               />
@@ -107,8 +107,6 @@ const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
         )
       }   
     </Draggable>
-  
-
   )
 }
 

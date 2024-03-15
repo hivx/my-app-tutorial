@@ -1,14 +1,12 @@
 import React, { useState } from 'react'; //su dung react hook useState
-import {createStore } from 'redux';
 import './App.css';
 import InputFeild from './components/InputFeild';//import inputfeild
-import {Todo} from "./model" //import todo dung trong dong 13 tu model
+import {Todo} from "./redux/store" 
 import TodoList from './components/TodoList';
 import {DragDropContext, DropResult} from 'react-beautiful-dnd';
 
-//khai bao compponent trong react su dung Typescript
 const App: React.FC = () => {
-  //khai bao sate voi bien todo va setTodo de cap nhat gia tri bien todo
+ //khai bao sate voi bien todo va setTodo de cap nhat gia tri bien todo
   const [todo, setTodo] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]); //state voi bien  todos la mang cua todo
   const [CompletedTodos, setCompletedTodos] = useState<Todo[]>([]);
@@ -29,7 +27,6 @@ const App: React.FC = () => {
   const onDragEnd = (result: DropResult) => {
     const { destination, source } = result;
 
-    console.log(result);
     //dich la null
     if (!destination) {
       return;
