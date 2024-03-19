@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import "./Styles.css"; //import css
-import { setTodo } from '../redux/Reducer';
+import { setTodo } from '../redux/Slice';
 import { useDispatch } from 'react-redux';
 
 //tao interface co cac du lieu de truyen vao

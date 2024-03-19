@@ -6,7 +6,7 @@ import { MdOutlineDelete, MdOutlineDone } from 'react-icons/md';
 import "./Styles.css";
 import {useDispatch} from 'react-redux'
 import { Draggable } from 'react-beautiful-dnd';
-import { doneTodo, deleteTodo, editSingle } from '../redux/Reducer';
+import { doneTodo, deleteTodo, editSingle } from '../redux/Slice';
 
 //dung interface cung duoc
 type Props = {

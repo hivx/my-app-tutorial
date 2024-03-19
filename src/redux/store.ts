@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import todoReducer from './Reducer';
+import todoReducer from './Slice';
 
 export interface Todo {
   id: number;

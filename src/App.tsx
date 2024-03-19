@@ -3,7 +3,7 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
 import InputFeild from './components/InputFeild';//import inputfeild
 import { RootState, Todo } from "./redux/Store"
-import { addTodo, setTodo, setTodos, setCompletedTodos } from './redux/Reducer';
+import { addTodo, setTodo, setTodos, setCompletedTodos } from './redux/Slice';
 import TodoList from './components/TodoList';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
