@@ -1,49 +1,37 @@
-//Xu ly tung todo mot
+//Xu ly tung todo
 import React, { useEffect, useRef, useState } from 'react';
-import { Todo } from '../redux/store';
+import { Todo } from '../redux/Store';
 import { CiEdit } from 'react-icons/ci';
 import { MdOutlineDelete, MdOutlineDone } from 'react-icons/md';
-import "./styles.css";
+import "./Styles.css";
+import {useDispatch} from 'react-redux'
 import { Draggable } from 'react-beautiful-dnd';
+import { doneTodo, deleteTodo, editSingle } from '../redux/Reducer';
 
 //dung interface cung duoc
 type Props = {
   index: number;
   todo: Todo,
-  todos: Todo[],
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
 }
 
-const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
-  //khai bao state voi bien  edit de cap nhap trang thai edittodo
+const SingleTodo  = ({index, todo}:Props) => {
+  //khai bao state voi bien edit de cap nhap trang thai edittodo
   const [edit, setEdit] = useState<boolean>(false)
-  const [editTodo, setEditTodo] = useState<string>(todo.todo) //luu tru noi dung ban dau cua todo
-  
+  const [editTodo, setEditTodo] = useState<string>(todo.todo)
+  const dispatch = useDispatch();
+
   //chuyen doi gia tri isDone
-  const handleDone = (id: number) => {
-    //cap nhat gia tri bien todos
-    setTodos(
-      //map de duyet qua tat cac phan tu trong mang
-      todos.map((todo)=>
-      //bieu thuc dieu kien de chuyen doi isDone
-        todo.id === id ? {...todo, isDone : !todo.isDone }: todo 
-      )
-    );
+  const handleDone = (id: number) => {  
+    dispatch(doneTodo(id));
   };
-
+  //xoa todo theo id
   const handleDelete = (id: number) => {
-    //filter de tao mang moi gom cac phan tu thoa man dieu kien
-    setTodos(todos.filter((todo) => todo.id !== id));
+    dispatch(deleteTodo(id));
   };
-
-  const handleEdit = (e: React.FormEvent, id: number) => {
+  const handleEdit = (e: React.FormEvent, id: number, todo: string) => {
     e.preventDefault();
 
-    setTodos(
-      todos.map((todo) => (
-        todo.id === id ? {...todo, todo:editTodo} : todo
-      ))
-    );
+    dispatch(editSingle({id, todo: editTodo}));
     setEdit(false);
   };
 
@@ -62,7 +50,7 @@ const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
           //HTML (JSX)
           <form 
             className={`todos__single ${snapshot.isDragging ? "drag" : ""}`} //tao dieu kien cho classname
-            onSubmit={(e) => handleEdit(e, todo.id)}
+            onSubmit={(e) => handleEdit(e, todo.id, editTodo)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -71,7 +59,8 @@ const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
               //input cho phep chinh sua todo
               <input
                 ref={inputRef}
-                value={editTodo} onChange={(e) => setEditTodo(e.target.value)}
+                value={editTodo}
+                onChange={(e) => setEditTodo(e.target.value)}
                 className="todos__single--text"
               />
               ) : (
@@ -108,6 +97,6 @@ const SingleTodo  = ({index, todo, todos, setTodos}: Props) => {
       }   
     </Draggable>
   )
-}
+};
 
 export default SingleTodo;

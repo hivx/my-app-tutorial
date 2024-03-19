@@ -1,15 +1,17 @@
-import React, { useState } from 'react'; //su dung react hook useState
+import React, { useState } from 'react';
 import './App.css';
+import { useSelector, useDispatch } from 'react-redux'
 import InputFeild from './components/InputFeild';//import inputfeild
-import {Todo} from "./redux/store" 
+import { RootState, Todo } from "./redux/Store"
+import { addTodo, setTodo, setTodos, setCompletedTodos } from './redux/Reducer';
 import TodoList from './components/TodoList';
-import {DragDropContext, DropResult} from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 const App: React.FC = () => {
- //khai bao sate voi bien todo va setTodo de cap nhat gia tri bien todo
-  const [todo, setTodo] = useState<string>("");
-  const [todos, setTodos] = useState<Todo[]>([]); //state voi bien  todos la mang cua todo
-  const [CompletedTodos, setCompletedTodos] = useState<Todo[]>([]);
+  const todo = useSelector((state: RootState) => state.todo.todo);
+  const todos = useSelector((state: RootState) => state.todo.todos);
+  const completedTodos = useSelector((state: RootState) => state.todo.completedTodos);
+  const dispatch = useDispatch();
 
   //tao su kien xu ly form ma khong load trang, khi submit
   const handleAdd = (e: React.FormEvent) => {
@@ -17,13 +19,13 @@ const App: React.FC = () => {
 
     //xu ly tao 1 input moi khi da nhap 1 cong viec
     if (todo) {
-      setTodos([...todos, {id: Date.now(), todo: todo, isDone: false }]);
-      setTodo("");
+      dispatch(addTodo(todo));
+      dispatch(setTodo(""));
     }
   };
 
-  //xu ly su kien ket thuc keo tha
-  //them kieu du lieu dropresult trong Typescript 
+  // xu ly su kien ket thuc keo tha
+  // them kieu du lieu dropresult trong Typescript 
   const onDragEnd = (result: DropResult) => {
     const { destination, source } = result;
 
@@ -40,8 +42,8 @@ const App: React.FC = () => {
     }
 
     let add;
-    let active = todos;
-    let complete = CompletedTodos;
+    let active = [...todos];
+    let complete = [...completedTodos];
     
     if (source.droppableId === "TodosList") {
       add = active[source.index];
@@ -57,19 +59,22 @@ const App: React.FC = () => {
       complete.splice(destination.index, 0, add);
     }
     //cap nhat
-    setCompletedTodos(complete);
-    setTodos(active);
+    dispatch(setTodos(active));
+    dispatch(setCompletedTodos(complete));
+    // setcompletedTodos(complete);
   };
   return (
     //HTML
     <div className="App">
         <span className="heading"> Taskify </span>
-        <InputFeild todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+        <InputFeild 
+          todo={todo} 
+          handleAdd={handleAdd}
+        />
         <DragDropContext onDragEnd={onDragEnd}>
           <TodoList 
-            todos={todos} setTodos={setTodos}
-            CompletedTodos = {CompletedTodos}
-            setCompletedTodos={setCompletedTodos}
+            todos={todos} 
+            completedTodos={completedTodos}
           />
         </DragDropContext>
     </div>
