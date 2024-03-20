@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Todo } from './Store';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState, Todo } from './Store';
 
 //luu cac bien/du lieu cua store
 interface TodoState {
@@ -15,9 +15,9 @@ const loadState = () => {
     if (serializedState === null) {
       return undefined; //tra ve ko xac dinh
     }
-    return JSON.parse(serializedState);//co thif load todoState
-  } catch (err) {
-    return undefined;//bat loi
+    return JSON.parse(serializedState);//co thi load todoState
+  } catch (err) {//bat loi
+    return undefined;
   }
 };
 
@@ -86,6 +86,16 @@ const todoSlice = createSlice({
     },
   },
 });
+
+//thu nghiem van chua xong voi todos
+const selectTodoState = (state: RootState) => state.todo;
+
+export const select = createSelector(
+  selectTodoState,
+  todoState => ({
+    todo: todoState.todo,
+  })
+);
 
 export const { setTodo, setTodos, setCompletedTodos, addTodo, editSingle, deleteTodo, doneTodo } = todoSlice.actions;
 export default todoSlice.reducer;

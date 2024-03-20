@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
 import InputFeild from './components/InputFeild';//import inputfeild
-import { RootState, Todo } from "./redux/Store"
+import { RootState } from "./redux/Store"
 import { addTodo, setTodo, setTodos, setCompletedTodos } from './redux/Slice';
 import TodoList from './components/TodoList';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { select } from './redux/Slice';
 
 const App: React.FC = () => {
-  const todo = useSelector((state: RootState) => state.todo.todo);
+  const todo = useSelector(select);
   const todos = useSelector((state: RootState) => state.todo.todos);
   const completedTodos = useSelector((state: RootState) => state.todo.completedTodos);
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const App: React.FC = () => {
 
     //xu ly tao 1 input moi khi da nhap 1 cong viec
     if (todo) {
-      dispatch(addTodo(todo));
+      dispatch(addTodo(todo.todo));
       dispatch(setTodo(""));
     }
   };
@@ -68,7 +69,7 @@ const App: React.FC = () => {
     <div className="App">
         <span className="heading"> Taskify </span>
         <InputFeild 
-          todo={todo} 
+          todo={todo.todo}
           handleAdd={handleAdd}
         />
         <DragDropContext onDragEnd={onDragEnd}>
